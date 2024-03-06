@@ -9,16 +9,17 @@ export default function Home() {
         <div className="wrapper grid grid-cols-1 gap-5 md:grid-cols-2 2xl:gap-0">
           <div className="flex flex-col justify-center gap-8">
             <h1 className="h1-bold">
-              Host, Connect, Celebrate: Your Events, Our Platform!
+              {/* Host, Connect, Celebrate: Your Events, Our Platform! */}
+              Sự hài lòng của bạn là sứ mệnh của chúng tôi!
             </h1>
             <p className="p-regular-20 md:p-regular-24">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-              repellendus asperiores velit vitae voluptas dicta veniam ad
-              mollitia beatae ullam quos doloribus, repudiandae eaque laboriosam
-              ex. Consectetur perferendis blanditiis aliquam!
+              An toàn, Uy tín và Chất lượng luôn là những tiêu chí hàng đầu của
+              Bông Sen Vàng suốt hơn 10 năm xây dựng thương hiệu bền vững. Với
+              mục tiêu mang tới những sản phẩm hiệu quả, hỗ trợ nông dân và cây
+              trồng đạt được những vụ mùa bội thu!
             </p>
             <Button className="button w-full sm:w-fit" size={"lg"} asChild>
-              <Link href={"#about"}>Learn More</Link>
+              <Link href={"#about"}>Tìm hiểu thêm</Link>
             </Button>
           </div>
 
@@ -27,7 +28,7 @@ export default function Home() {
             alt="hero"
             width={1000}
             height={1000}
-            className="max-h-[70vh] object-contain object-center 2xl:max-h-[50vh]"
+            className="max-h-[70vh] object-contain object-center 2xl:max-h-[60vh]"
           />
         </div>
       </section>

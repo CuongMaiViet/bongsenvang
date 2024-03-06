@@ -19,8 +19,8 @@ const MobileNav = () => {
           <Image
             src={"/assets/icons/menu.svg"}
             alt="menu"
-            width={24}
-            height={24}
+            width={30}
+            height={30}
             className="cursor-pointer"
           />
         </SheetTrigger>

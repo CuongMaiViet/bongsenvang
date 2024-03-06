@@ -103,3 +103,7 @@ export const handleError = (error: unknown) => {
   console.error(error);
   throw new Error(typeof error === "string" ? error : JSON.stringify(error));
 };
+
+export const capitalize = (str: string) => {
+  return str && str[0].toUpperCase() + str.slice(1);
+};

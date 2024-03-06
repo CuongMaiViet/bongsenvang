@@ -2,10 +2,10 @@ import { Document, Schema, model, models } from "mongoose";
 
 export interface IProduct extends Document {
   _id: string;
+  title: string;
   registrationNumber: string;
-  imagesUrl: string;
+  imageUrl: string;
   price?: string;
-  isFree: boolean;
   ingredients: {
     cores: [{ ingredient: { _id: string; title: string }; amount: string }];
     additive: { title: string; amount: string };
@@ -44,9 +44,8 @@ export interface IProduct extends Document {
 const ProductSchema = new Schema({
   title: { type: String, required: true },
   registrationNumber: { type: String, required: true },
-  imagesUrl: { type: String, required: true },
+  imageUrl: { type: String, required: true },
   price: { type: String },
-  isFree: { type: Boolean, default: false },
   ingredients: {
     cores: [
       {
@@ -63,7 +62,11 @@ const ProductSchema = new Schema({
       amount: { type: String, required: true },
     },
   },
-  category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
+  },
   formulation: {
     type: Schema.Types.ObjectId,
     ref: "Formulation",
@@ -98,9 +101,11 @@ const ProductSchema = new Schema({
   register: { type: Schema.Types.ObjectId, ref: "Register" },
   packager: { type: Schema.Types.ObjectId, ref: "Packager" },
   distributer: { type: Schema.Types.ObjectId, ref: "Distributer" },
-  distributedAt: {
-    country: { type: String },
-  },
+  distributedAt: [
+    {
+      country: { type: String },
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 

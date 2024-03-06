@@ -10,21 +10,7 @@ const CategorySchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    enum: [
-      "thuốc diệt chuột",
-      "thuốc diệt nấm",
-      "thuốc diệt sâu",
-      "thuốc diệt rệp",
-      "thuốc diệt bọ",
-      "thuốc diệt cỏ",
-      "thuốc diệt nhện",
-    ],
   },
-  // targetPestGroup: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "PestGroup",
-  //   required: true,
-  // },
   createdAt: { type: Date, default: Date.now },
 });
 
