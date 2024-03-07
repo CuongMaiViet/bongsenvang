@@ -55,8 +55,8 @@ export function FileUploader({
           />
           <h3 className="mb-2 mt-2">Kéo thả ảnh vào đây</h3>
           <p className="p-medium-12 mb-4">SVG, PNG, JPG</p>
-          <Button type="button" className="rounded-full">
-            Chọn thêm ảnh từ máy tính
+          <Button type="button" className="rounded-lg">
+            Chọn thêm ảnh từ thiết bị
           </Button>
         </div>
       )}

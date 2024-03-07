@@ -18,14 +18,15 @@ export const translator = {
   registrationNumber: "mã số đăng ký",
   image: "hình ảnh sản phẩm",
   imageUrl: "đường link hình ảnh",
-  price: "giá",
+  price: "giá sản phẩm",
   ingredient: "nguyên liệu",
   core: "nguyên liệu chính",
   ingredientId: "mã nguyên liệu",
   additive: "phụ gia",
   amount: "liều lượng",
-  category: "chủng loại",
+  category: "chủng loại thuốc",
   categoryId: "mã chủng loại",
+  formulation: "công thức thuốc",
   formulationId: "mã công thức",
   characteristic: "tính chất thuốc",
   benefit: "lợi ích",
@@ -42,11 +43,15 @@ export const translator = {
   rating: "hiệu quả của thuốc đối với sâu bệnh",
   mfg: "ngày sản suất",
   exp: "hạn sử dụng",
+  manufacturer: "đơn vị sản xuất sản phẩm",
   manufacturerId: "mã đơn vị sản xuất sản phẩm",
+  register: "đơn vị đăng ký sản phẩm",
   registerId: "mã đơn vị đăng ký sản phẩm",
+  packager: "đơn vị đóng gói sản phẩm",
   packagerId: "mã đơn vị đóng gói sản phẩm",
+  distributer: "đơn vị phân phối sản phẩm",
   distributerId: "mã đơn vị phân phối sản phẩm",
-  distributedAtCountry: "quốc gia đang phân phối sản phẩm",
+  distributedAtCountry: "phân phối tại các quốc gia",
 };
 
 export const productDefaultValues = {
@@ -95,7 +100,8 @@ export const productDefaultValues = {
   distributerId: "",
   distributedAt: [
     {
-      country: "",
+      id: "",
+      value: "",
     },
   ],
 };
