@@ -16,16 +16,17 @@ import { Input } from "@/components/ui/input";
 import { productFormSchema } from "@/lib/validator";
 import * as z from "zod";
 import { productDefaultValues, translator as t } from "@/constants";
-import Dropdown from "./Dropdown";
 import { capitalize as cap } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUploader } from "./FileUploader";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
 import { Tag, TagInput } from "../tag/tag-input";
 
 import "react-datepicker/dist/react-datepicker.css";
+import DoubleInput from "./DoubleInput";
+import { CategoryDrop, DistributerDrop, FormulationDrop } from "./dropdown";
 
 type ProductFormProps = {
   userId: string;
@@ -34,7 +35,9 @@ type ProductFormProps = {
 
 const ProductForm = ({ userId, type }: ProductFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const [keyDistributedTags, setKeyDistributedTags] = useState<Tag[]>([]);
+  const [keyCharacteristicTags, setKeyCharacteristicTags] = useState<Tag[]>([]);
+  const [keyBenefitTags, setKeyBenefitTags] = useState<Tag[]>([]);
   const initialValues = productDefaultValues;
 
   const form = useForm<z.infer<typeof productFormSchema>>({
@@ -43,6 +46,10 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
   });
 
   const { setValue } = form;
+
+  function tagsToArrayOfString(newTags: SetStateAction<Tag[]>) {
+    return (newTags as unknown as Tag[]).map((e) => e.value);
+  }
 
   function onSubmit(values: z.infer<typeof productFormSchema>) {
     console.log(values);
@@ -99,14 +106,14 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="categoryId"
+            name="category"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
                   <legend className="pb-1">{cap(t.category)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <CategoryDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -122,14 +129,14 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="formulationId"
+            name="formulation"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
                   <legend className="pb-1">{cap(t.formulation)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <FormulationDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -188,6 +195,45 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
+            name="benefit"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.benefit)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <TagInput
+                    {...field}
+                    placeholder="Điền vào đây và nhấn Enter..."
+                    tags={keyBenefitTags}
+                    inputFieldPostion="top"
+                    direction="row"
+                    variant={"primary"}
+                    shape={"rounded"}
+                    borderStyle={"none"}
+                    animation={"slideIn"}
+                    textStyle={"italic"}
+                    truncate={10}
+                    className="input-field"
+                    setTags={(newTags) => {
+                      setKeyBenefitTags(newTags); //set tag and show tag on screen
+                      setValue(
+                        "benefit",
+                        tagsToArrayOfString(newTags) as [string, ...string[]]
+                      ); //add value to form with corresponding key
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Những công dụng nổi trội của sản phẩm
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="characteristic"
             render={({ field }) => (
               <FormItem className="w-full">
@@ -195,25 +241,39 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                   <legend className="pb-1">{cap(t.characteristic)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-lg bg-grey-50 px-4 py-2">
-                    <Image
-                      src={"/assets/icons/chemical.svg"}
-                      alt="chemical"
-                      width={24}
-                      height={24}
-                    />
-                    <Input
-                      placeholder="Điền vào đây..."
-                      {...field}
-                      className="input-field"
-                    />
-                  </div>
+                  <TagInput
+                    {...field}
+                    placeholder="Điền vào đây và nhấn Enter..."
+                    tags={keyCharacteristicTags}
+                    inputFieldPostion="top"
+                    direction="row"
+                    variant={"primary"}
+                    shape={"rounded"}
+                    borderStyle={"none"}
+                    animation={"slideIn"}
+                    textStyle={"italic"}
+                    truncate={10}
+                    className="input-field"
+                    setTags={(newTags) => {
+                      setKeyCharacteristicTags(newTags); //set tag and show tag on screen
+                      setValue(
+                        "characteristic",
+                        tagsToArrayOfString(newTags) as [string, ...string[]]
+                      ); //add value to form with corresponding key
+                    }}
+                  />
                 </FormControl>
+                <FormDescription>
+                  Sản phẩm có độc hại hay có những tính chất nào gây nguy hiểm
+                  cho người hay không?
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+        </div>
 
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="price"
@@ -244,9 +304,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
               </FormItem>
             )}
           />
-        </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="mfg"
@@ -314,7 +372,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
+        {/* <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="manufacturerId"
@@ -324,7 +382,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                   <legend className="pb-1">{cap(t.manufacturer)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <ManufacturerDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -345,7 +403,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                   <legend className="pb-1">{cap(t.packager)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <PackagerDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -366,7 +424,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                   <legend className="pb-1">{cap(t.register)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <RegisterDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -378,19 +436,19 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
               </FormItem>
             )}
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="distributerId"
+            name="distributer"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
                   <legend className="pb-1">{cap(t.distributer)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <Dropdown
+                  <DistributerDrop
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
@@ -417,7 +475,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                   <TagInput
                     {...field}
                     placeholder="Điền vào đây và nhấn Enter..."
-                    tags={tags}
+                    tags={keyDistributedTags}
                     inputFieldPostion="top"
                     direction="row"
                     variant={"primary"}
@@ -425,10 +483,14 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                     borderStyle={"none"}
                     animation={"slideIn"}
                     textStyle={"italic"}
+                    truncate={10}
                     className="input-field"
                     setTags={(newTags) => {
-                      setTags(newTags); //show tag on screen
-                      setValue("distributedAt", newTags as [Tag, ...Tag[]]); //add value to form with corresponding key
+                      setKeyDistributedTags(newTags); //set tag and show tag on screen
+                      setValue(
+                        "distributedAt",
+                        tagsToArrayOfString(newTags) as [string, ...string[]]
+                      ); //add value to form with corresponding key
                     }}
                   />
                 </FormControl>
@@ -438,7 +500,37 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
         </div>
 
-        <Button type="submit">Submit</Button>
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="ingredients.cores"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.ingredient)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <DoubleInput />
+                </FormControl>
+                <FormDescription>
+                  Những nguyên liệu chính làm ra sản phẩm
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          size={"lg"}
+          disabled={form.formState.isSubmitting}
+          className="button col-span-2 w-full"
+        >
+          {form.formState.isSubmitting
+            ? "Đang xử lý..."
+            : `${type === "Create" ? "Tạo mới" : "Cập nhật"} sản phẩm`}
+        </Button>
       </form>
     </Form>
   );

@@ -72,7 +72,7 @@ const ProductSchema = new Schema({
     ref: "Formulation",
     required: true,
   },
-  characteristic: { type: String },
+  characteristic: { type: [String] },
   benefit: { type: [String] },
   manual: {
     intro: { type: String },

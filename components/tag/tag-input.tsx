@@ -11,9 +11,10 @@ import { TagPopover } from "./tag-popover";
 import { TagList } from "./tag-list";
 import { tagVariants } from "./tag";
 import { Autocomplete } from "./auto-complete";
+import { cn } from "@/lib/utils";
 
 export enum Delimiter {
-  Comma = ",",
+  Comma = ";",
   Enter = "Enter",
   Space = " ",
 }
@@ -224,7 +225,9 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
     };
 
     const filteredAutocompleteOptions = autocompleteFilter
-      ? autocompleteOptions?.filter((option) => autocompleteFilter(option.value))
+      ? autocompleteOptions?.filter((option) =>
+          autocompleteFilter(option.value)
+        )
       : autocompleteOptions;
 
     const displayedTags = sortTags ? [...tags].sort() : tags;
@@ -241,13 +244,15 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
 
     return (
       <div
-        className={`w-full flex gap-3 ${
+        className={cn(
+          "w-full flex",
           inputFieldPostion === "bottom"
             ? "flex-col"
             : inputFieldPostion === "top"
             ? "flex-col-reverse"
-            : "flex-row"
-        }`}
+            : "flex-row",
+          tags.length > 0 ? "gap-3" : "gap-0"
+        )}
       >
         {!usePopoverForTags ? (
           <TagList

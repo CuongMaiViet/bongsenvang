@@ -76,6 +76,29 @@ export type GetRelatedEventsByCategoryParams = {
   page: number | string;
 };
 
+export type DropdownProps = {
+  value?: string;
+  onChangeHandler?: () => void;
+};
+
+export type IDropdownShowData = {
+  _id: string;
+  title: string;
+  abbreviation?: string;
+};
+
+export type INewData = {
+  title: string;
+  shortTitle?: string;
+  abbreviation?: string;
+  contacts?: {
+    address?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
+};
+
 export type Event = {
   _id: string;
   title: string;
@@ -100,7 +123,25 @@ export type Event = {
 
 // ====== CATEGORY PARAMS
 export type CreateCategoryParams = {
-  categoryName: string;
+  categoryTitle: string;
+};
+
+// ====== FORMULATION PARAMS
+export type CreateFormulationParams = {
+  formulationTitle: string;
+  formulationAbbre: string;
+};
+
+// ====== DISTRIBUTER PARAMS
+export type CreateDistributerParams = {
+  distributerTitle: string;
+  distributerShortTitle: string;
+  distributerContacts: {
+    address: string;
+    phone: string;
+    email: string;
+    website: string;
+  };
 };
 
 // ====== ORDER PARAMS

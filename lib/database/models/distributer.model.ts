@@ -1,7 +1,19 @@
 import { Schema, model, models } from "mongoose";
 
+export interface IDistributer extends Document {
+  _id: string;
+  title: string;
+  contacts?: {
+    address?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
+}
+
 const DistributerSchema = new Schema({
   title: { type: String, required: true, unique: true },
+  shortTitle: { type: String },
   contacts: {
     address: { type: String },
     phone: { type: String },
