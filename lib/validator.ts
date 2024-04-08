@@ -89,9 +89,9 @@ export const productFormSchema = z.object({
   ),
   mfg: z.date(),
   exp: z.string(),
-  manufacturer: z.string(),
-  register: z.string(),
-  packager: z.string(),
+  manufacturer: z.string().min(1, `Vui lòng chọn ${t.manufacturer} của sản phẩm`),
+  register: z.string().min(1, `Vui lòng chọn ${t.register} của sản phẩm`),
+  packager: z.string().min(1, `Vui lòng chọn ${t.packager} của sản phẩm`),
   distributer: z.string().min(1, `Vui lòng chọn ${t.distributer} của sản phẩm`),
   distributedAt: z.array(z.string()),
 });

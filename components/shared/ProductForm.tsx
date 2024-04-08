@@ -26,7 +26,7 @@ import { Tag, TagInput } from "../tag/tag-input";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DoubleInput from "./DoubleInput";
-import { CategoryDrop, DistributerDrop, FormulationDrop } from "./dropdown";
+import { CategoryDrop, DistributerDrop, FormulationDrop, ManufacturerDrop, PackagerDrop, RegisterDrop } from "./dropdown";
 
 type ProductFormProps = {
   userId: string;
@@ -372,10 +372,10 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
         </div>
 
-        {/* <div className="flex flex-col gap-5 md:flex-row">
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="manufacturerId"
+            name="manufacturer"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -396,7 +396,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
           <FormField
             control={form.control}
-            name="packagerId"
+            name="packager"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -417,7 +417,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
           <FormField
             control={form.control}
-            name="registerId"
+            name="register"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -436,7 +436,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
               </FormItem>
             )}
           />
-        </div> */}
+        </div>
 
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField

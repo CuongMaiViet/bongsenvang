@@ -47,7 +47,12 @@ const BaseDrop = ({
                 value={e._id}
                 className={cn(
                   "select-item p-regular-14",
-                  selectName === "distributer" ? "uppercase" : "capitalize"
+                  selectName === "distributer" ||
+                    "packager" ||
+                    "manufacturer" ||
+                    "register"
+                    ? "uppercase"
+                    : "capitalize"
                 )}
               >
                 {e.abbreviation ? e.title + ` (${e.abbreviation})` : e.title}

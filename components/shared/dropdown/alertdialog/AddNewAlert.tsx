@@ -39,7 +39,7 @@ const AddNewAlert = ({
           <AlertDialogDescription>
             <Input
               type="text"
-              placeholder={`Tên ${translateSelectName} mới`}
+              placeholder={`(Bắt buộc) Tên ${translateSelectName} mới`}
               className="input-field mt-3"
               onChange={(e) =>
                 setNewData((prevState) => ({
@@ -62,7 +62,10 @@ const AddNewAlert = ({
               />
             )}
 
-            {selectName === "distributer" && (
+            {(selectName === "distributer" ||
+              "manufacturer" ||
+              "packager" ||
+              "register") && (
               <>
                 <Input
                   type="text"

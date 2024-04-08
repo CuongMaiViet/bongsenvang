@@ -2,10 +2,10 @@
 
 import { CreateOrganizationParams } from "@/types";
 import { connectToDataBase } from "../database";
-import Distributer from "../database/models/distributer.model";
+import Packager from "../database/models/packager.model";
 import { handleError } from "../utils";
 
-export const createDistributer = async ({
+export const createPackager = async ({
   organizationTitle,
   organizationShortTitle,
   organizationContacts,
@@ -13,38 +13,38 @@ export const createDistributer = async ({
   try {
     await connectToDataBase();
 
-    const newDistributer = await Distributer.create({
+    const newPackager = await Packager.create({
       title: organizationTitle,
       shortTitle: organizationShortTitle,
       contacts: organizationContacts,
     });
 
-    return JSON.parse(JSON.stringify(newDistributer));
+    return JSON.parse(JSON.stringify(newPackager));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const getAllDistributers = async () => {
+export const getAllPackagers = async () => {
   try {
     await connectToDataBase();
 
-    const distributers = await Distributer.find();
+    const packagers = await Packager.find();
 
-    return JSON.parse(JSON.stringify(distributers));
+    return JSON.parse(JSON.stringify(packagers));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const deleteDistributer = async (organizationID: string) => {
+export const deletePackager = async (organizationID: string) => {
   try {
     await connectToDataBase();
 
-    await Distributer.findByIdAndDelete(organizationID);
-    const distributer = await Distributer.find();
+    await Packager.findByIdAndDelete(organizationID);
+    const packager = await Packager.find();
 
-    return JSON.parse(JSON.stringify(distributer));
+    return JSON.parse(JSON.stringify(packager));
   } catch (error) {
     handleError(error);
   }

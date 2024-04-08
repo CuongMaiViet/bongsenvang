@@ -2,6 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 const PackagerSchema = new Schema({
   title: { type: String, required: true, unique: true },
+  shortTitle: { type: String },
   contacts: {
     address: { type: String },
     phone: { type: String },

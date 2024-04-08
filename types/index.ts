@@ -132,17 +132,28 @@ export type CreateFormulationParams = {
   formulationAbbre: string;
 };
 
-// ====== DISTRIBUTER PARAMS
-export type CreateDistributerParams = {
-  distributerTitle: string;
-  distributerShortTitle: string;
-  distributerContacts: {
+// ====== ORGANIZATION PARAMS
+export type CreateOrganizationParams = {
+  organizationTitle: string;
+  organizationShortTitle: string;
+  organizationContacts: {
     address: string;
     phone: string;
     email: string;
     website: string;
   };
 };
+
+export interface IOrganization extends Document {
+  _id: string;
+  title: string;
+  contacts?: {
+    address?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
+}
 
 // ====== ORDER PARAMS
 export type CheckoutOrderParams = {

@@ -2,10 +2,10 @@
 
 import { CreateOrganizationParams } from "@/types";
 import { connectToDataBase } from "../database";
-import Distributer from "../database/models/distributer.model";
 import { handleError } from "../utils";
+import Manufacturer from "../database/models/manufacturer.model";
 
-export const createDistributer = async ({
+export const createManufacturer = async ({
   organizationTitle,
   organizationShortTitle,
   organizationContacts,
@@ -13,38 +13,38 @@ export const createDistributer = async ({
   try {
     await connectToDataBase();
 
-    const newDistributer = await Distributer.create({
+    const newManufacturer = await Manufacturer.create({
       title: organizationTitle,
       shortTitle: organizationShortTitle,
       contacts: organizationContacts,
     });
 
-    return JSON.parse(JSON.stringify(newDistributer));
+    return JSON.parse(JSON.stringify(newManufacturer));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const getAllDistributers = async () => {
+export const getAllManufacturers = async () => {
   try {
     await connectToDataBase();
 
-    const distributers = await Distributer.find();
+    const manufacturers = await Manufacturer.find();
 
-    return JSON.parse(JSON.stringify(distributers));
+    return JSON.parse(JSON.stringify(manufacturers));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const deleteDistributer = async (organizationID: string) => {
+export const deleteManufacturer = async (organizationID: string) => {
   try {
     await connectToDataBase();
 
-    await Distributer.findByIdAndDelete(organizationID);
-    const distributer = await Distributer.find();
+    await Manufacturer.findByIdAndDelete(organizationID);
+    const manufacturer = await Manufacturer.find();
 
-    return JSON.parse(JSON.stringify(distributer));
+    return JSON.parse(JSON.stringify(manufacturer));
   } catch (error) {
     handleError(error);
   }

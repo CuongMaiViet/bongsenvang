@@ -2,10 +2,10 @@
 
 import { CreateOrganizationParams } from "@/types";
 import { connectToDataBase } from "../database";
-import Distributer from "../database/models/distributer.model";
 import { handleError } from "../utils";
+import Register from "../database/models/register.model";
 
-export const createDistributer = async ({
+export const createRegister = async ({
   organizationTitle,
   organizationShortTitle,
   organizationContacts,
@@ -13,38 +13,38 @@ export const createDistributer = async ({
   try {
     await connectToDataBase();
 
-    const newDistributer = await Distributer.create({
+    const newRegister = await Register.create({
       title: organizationTitle,
       shortTitle: organizationShortTitle,
       contacts: organizationContacts,
     });
 
-    return JSON.parse(JSON.stringify(newDistributer));
+    return JSON.parse(JSON.stringify(newRegister));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const getAllDistributers = async () => {
+export const getAllRegisters = async () => {
   try {
     await connectToDataBase();
 
-    const distributers = await Distributer.find();
+    const registers = await Register.find();
 
-    return JSON.parse(JSON.stringify(distributers));
+    return JSON.parse(JSON.stringify(registers));
   } catch (error) {
     handleError(error);
   }
 };
 
-export const deleteDistributer = async (organizationID: string) => {
+export const deleteRegister = async (organizationID: string) => {
   try {
     await connectToDataBase();
 
-    await Distributer.findByIdAndDelete(organizationID);
-    const distributer = await Distributer.find();
+    await Register.findByIdAndDelete(organizationID);
+    const register = await Register.find();
 
-    return JSON.parse(JSON.stringify(distributer));
+    return JSON.parse(JSON.stringify(register));
   } catch (error) {
     handleError(error);
   }
