@@ -16,19 +16,36 @@ export type UpdateUserParams = {
 };
 
 // ====== PRODUCT PARAMS
-export type CreateEventParams = {
+export type CreateProductParams = {
   userId: string;
-  event: {
+  product: {
     title: string;
-    description: string;
-    location: string;
+    registrationNumber: string;
     imageUrl: string;
-    startDateTime: Date;
-    endDateTime: Date;
-    categoryId: string;
     price: string;
-    isFree: boolean;
-    url: string;
+    ingredients: { ingredient: string; amount: string }[];
+    category: string;
+    formulation: string;
+    characteristic: string[];
+    benefit: string[];
+    manual: {
+      intro: string;
+      useHow: string;
+      useWhen: string;
+      useAmount: { crop: string; pest: string; amount: string }[];
+      note: string;
+      quarantine: string;
+      safetyInstruction: string;
+      afterUse: string;
+      firstAid: string;
+    };
+    mfg: string;
+    exp: string;
+    manufacturer: string;
+    register: string;
+    packager: string;
+    distributer: string;
+    distributedAtCountry: string[];
   };
   path: string;
 };
@@ -91,6 +108,7 @@ export type INewData = {
   title: string;
   shortTitle?: string;
   abbreviation?: string;
+  desc?: string;
   contacts?: {
     address?: string;
     phone?: string;
@@ -124,6 +142,22 @@ export type Event = {
 // ====== CATEGORY PARAMS
 export type CreateCategoryParams = {
   categoryTitle: string;
+};
+
+// ====== INGREDIENT PARAMS
+export type CreateIngredientParams = {
+  ingredientTitle: string;
+  ingredientDesc: string;
+};
+
+// ====== CROP PARAMS
+export type CreateCropParams = {
+  cropTitle: string;
+};
+
+// ====== PEST PARAMS
+export type CreatePestParams = {
+  pestTitle: string;
 };
 
 // ====== FORMULATION PARAMS

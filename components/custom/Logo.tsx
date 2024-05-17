@@ -8,6 +8,7 @@ export default function Logo() {
       alt="logo"
       tabIndex={-1}
       className="w-[138px] h-auto"
+      priority
     />
   );
 }

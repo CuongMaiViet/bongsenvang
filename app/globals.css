@@ -74,12 +74,12 @@
 }
 
 body {
-  font-family: var(--font-noto-serif)
+  font-family: var(--font-noto-serif);
 }
 
 .filter-grey {
-  filter: brightness(0) saturate(100%) invert(47%) sepia(0%) saturate(217%)
-    hue-rotate(32deg) brightness(98%) contrast(92%);
+  filter: brightness(0) saturate(100%) invert(47%) sepia(0%) saturate(217%) hue-rotate(32deg) brightness(98%)
+    contrast(92%);
 }
 
 /* ========================================== TAILWIND STYLES */
@@ -228,6 +228,10 @@ body {
   .toggle-switch {
     @apply bg-gray-300 !important;
   }
+
+  .tag-item {
+    @apply transition-all border inline-flex items-center pl-2 bg-primary border-primary text-primary-foreground hover:bg-primary/90 text-sm h-8 rounded-lg border-none capitalize cursor-default italic;
+  }
 }
 
 /* ========================================== CLERK STYLES */
@@ -250,7 +254,7 @@ body {
 .cl-formButtonPrimary:hover,
 .cl-formButtonPrimary:focus,
 .cl-formButtonPrimary:active {
-  background-color: #705CF7
+  background-color: #705cf7;
 }
 
 /* ========================================== REACT-DATEPICKER STYLES */

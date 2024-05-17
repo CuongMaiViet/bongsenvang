@@ -12,12 +12,7 @@ import { TagList } from "./tag-list";
 import { tagVariants } from "./tag";
 import { Autocomplete } from "./auto-complete";
 import { cn } from "@/lib/utils";
-
-export enum Delimiter {
-  Comma = ";",
-  Enter = "Enter",
-  Space = " ",
-}
+import { Delimiter } from "@/constants";
 
 type OmittedInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -84,7 +79,7 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>(
       enableAutocomplete,
       autocompleteOptions,
       maxTags,
-      delimiter = Delimiter.Comma,
+      delimiter = Delimiter.Semicolon,
       onTagAdd,
       onTagRemove,
       allowDuplicates,

@@ -3,6 +3,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { productFormSchema } from "@/lib/validator";
+import * as z from "zod";
+import { FieldName, productDefaultValues, translator as t } from "@/constants";
+import { capitalize as cap } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
+import { FileUploader } from "./FileUploader";
+import { SetStateAction, useState } from "react";
+import Image from "next/image";
+import { Tag, TagInput } from "../tag/tag-input";
+import "react-datepicker/dist/react-datepicker.css";
+import IngredientDrop, { Ingredient } from "./fields/IngredientDrop";
+import { useUploadThing } from "@/lib/uploadthing";
 import {
   Form,
   FormControl,
@@ -12,21 +25,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { productFormSchema } from "@/lib/validator";
-import * as z from "zod";
-import { productDefaultValues, translator as t } from "@/constants";
-import { capitalize as cap } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
-import { FileUploader } from "./FileUploader";
-import { SetStateAction, useState } from "react";
-import Image from "next/image";
-import DatePicker from "react-datepicker";
-import { Tag, TagInput } from "../tag/tag-input";
-
-import "react-datepicker/dist/react-datepicker.css";
-import DoubleInput from "./DoubleInput";
-import { CategoryDrop, DistributerDrop, FormulationDrop, ManufacturerDrop, PackagerDrop, RegisterDrop } from "./dropdown";
+import {
+  CategoryDrop,
+  DistributerDrop,
+  FormulationDrop,
+  ManufacturerDrop,
+  PackagerDrop,
+  RegisterDrop,
+} from "./fields";
+import { useRouter } from "next/navigation";
+import { createProduct } from "@/lib/actions/product.actions";
+import CropPestDrop, { CropPestUploadData } from "./fields/useAmount";
 
 type ProductFormProps = {
   userId: string;
@@ -34,25 +43,92 @@ type ProductFormProps = {
 };
 
 const ProductForm = ({ userId, type }: ProductFormProps) => {
+  const initialValues = productDefaultValues;
+  const initialPlaceHolder = "Điền vào đây...";
+
+  const {
+    Title,
+    RegisNum,
+    Cate,
+    Formu,
+    Intro,
+    uHow,
+    uWhen,
+    uAmount,
+    Note,
+    Quarantine,
+    SafeInstu,
+    AfterUse,
+    FirstAid,
+    ImageUrl,
+    Benefit,
+    Char,
+    Price,
+    Mfg,
+    Exp,
+    Manufacturer,
+    Packager,
+    Register,
+    Distributer,
+    DisAt,
+    Ingre,
+  } = FieldName;
+
   const [files, setFiles] = useState<File[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const router = useRouter();
+
   const [keyDistributedTags, setKeyDistributedTags] = useState<Tag[]>([]);
   const [keyCharacteristicTags, setKeyCharacteristicTags] = useState<Tag[]>([]);
   const [keyBenefitTags, setKeyBenefitTags] = useState<Tag[]>([]);
-  const initialValues = productDefaultValues;
+
+  const { startUpload } = useUploadThing("imageUploader");
 
   const form = useForm<z.infer<typeof productFormSchema>>({
     resolver: zodResolver(productFormSchema),
     defaultValues: initialValues,
   });
 
-  const { setValue } = form;
-
-  function tagsToArrayOfString(newTags: SetStateAction<Tag[]>) {
-    return (newTags as unknown as Tag[]).map((e) => e.value);
+  function tagsToArrayOfString(newTags: SetStateAction<Tag[]>): string[] {
+    return (newTags as Tag[]).map((e) => e.value);
   }
 
-  function onSubmit(values: z.infer<typeof productFormSchema>) {
+  async function onSubmit(values: z.infer<typeof productFormSchema>) {
     console.log(values);
+    let uploadedImageUrl = values.imageUrl;
+    if (files.length > 0) {
+      const uploadedImage = await startUpload(files);
+
+      if (!uploadedImage) return;
+
+      uploadedImageUrl = uploadedImage[0].url;
+    }
+
+    if (type === "Create") {
+      try {
+        const newProduct = await createProduct({
+          product: {
+            ...values,
+            imageUrl: uploadedImageUrl,
+            exp: `${values.exp} năm`,
+            price: `${values.price || 0} VNĐ`,
+            manual: {
+              ...values.manual,
+              quarantine: `${values.manual.quarantine} ngày`,
+            },
+          },
+          userId,
+          path: "/profile",
+        });
+
+        if (newProduct) {
+          form.reset();
+          router.push(`/products/${newProduct._id}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   return (
@@ -64,7 +140,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="title"
+            name={Title}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -72,7 +148,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Điền vào đây..."
+                    placeholder={initialPlaceHolder}
                     {...field}
                     className="input-field"
                   />
@@ -84,7 +160,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="registrationNumber"
+            name={RegisNum}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -92,7 +168,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Điền vào đây..."
+                    placeholder={initialPlaceHolder}
                     {...field}
                     className="input-field"
                   />
@@ -106,7 +182,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="category"
+            name={Cate}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -129,7 +205,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="formulation"
+            name={Formu}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -153,7 +229,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="manual.intro"
+            name={Intro}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -161,7 +237,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                 </FormLabel>
                 <FormControl className="h-72">
                   <Textarea
-                    placeholder="Điền vào đây..."
+                    placeholder={initialPlaceHolder}
                     {...field}
                     className="textarea rounded-lg"
                   />
@@ -173,7 +249,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="imageUrl"
+            name={ImageUrl}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -195,7 +271,69 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="benefit"
+            name={uHow}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.useHow)}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={uWhen}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.useWhen)}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={Note}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.note)}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name={Benefit}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -213,11 +351,12 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                     borderStyle={"none"}
                     animation={"slideIn"}
                     textStyle={"italic"}
+                    textCase={"lowercase"}
                     truncate={10}
                     className="input-field"
                     setTags={(newTags) => {
                       setKeyBenefitTags(newTags); //set tag and show tag on screen
-                      setValue(
+                      form.setValue(
                         "benefit",
                         tagsToArrayOfString(newTags) as [string, ...string[]]
                       ); //add value to form with corresponding key
@@ -234,11 +373,13 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="characteristic"
+            name={Char}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
-                  <legend className="pb-1">{cap(t.characteristic)}</legend>
+                  <legend className="pb-1">{`${cap(
+                    t.characteristic
+                  )}*`}</legend>
                 </FormLabel>
                 <FormControl>
                   <TagInput
@@ -252,11 +393,12 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                     borderStyle={"none"}
                     animation={"slideIn"}
                     textStyle={"italic"}
+                    textCase={"lowercase"}
                     truncate={10}
                     className="input-field"
                     setTags={(newTags) => {
                       setKeyCharacteristicTags(newTags); //set tag and show tag on screen
-                      setValue(
+                      form.setValue(
                         "characteristic",
                         tagsToArrayOfString(newTags) as [string, ...string[]]
                       ); //add value to form with corresponding key
@@ -276,7 +418,71 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="price"
+            name={SafeInstu}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{`${cap(
+                    t.safetyInstruction
+                  )}*`}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={AfterUse}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{`${cap(t.afterUse)}*`}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={FirstAid}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{`${cap(t.firstAid)}*`}</legend>
+                </FormLabel>
+                <FormControl className="h-40">
+                  <Textarea
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="textarea rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name={Price}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -291,7 +497,9 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                       height={24}
                     />
                     <Input
-                      placeholder="Điền vào đây..."
+                      type="number"
+                      step={1000}
+                      placeholder={initialPlaceHolder}
                       {...field}
                       className="input-field"
                     />
@@ -307,7 +515,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="mfg"
+            name={Mfg}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -322,7 +530,12 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                       height={24}
                       className="filter-grey"
                     />
-                    <p className="ml-3 whitespace-nowrap text-grey-600">
+                    <Input
+                      placeholder={initialPlaceHolder}
+                      {...field}
+                      className="input-field"
+                    />
+                    {/* <p className="ml-3 whitespace-nowrap text-grey-600">
                       Ngày/tháng/năm:
                     </p>
                     <DatePicker
@@ -331,7 +544,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                       dateFormat={"dd/MM/yyyy"}
                       wrapperClassName="datePicker"
                       name="mfg"
-                    />
+                    /> */}
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -341,7 +554,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="exp"
+            name={Exp}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -357,7 +570,8 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                       className="filter-grey"
                     />
                     <Input
-                      placeholder="Điền vào đây..."
+                      type="number"
+                      placeholder={initialPlaceHolder}
                       {...field}
                       className="input-field"
                     />
@@ -375,7 +589,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="manufacturer"
+            name={Manufacturer}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -396,7 +610,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
           <FormField
             control={form.control}
-            name="packager"
+            name={Packager}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -417,7 +631,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
           />
           <FormField
             control={form.control}
-            name="register"
+            name={Register}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -441,7 +655,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="distributer"
+            name={Distributer}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -463,7 +677,7 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
 
           <FormField
             control={form.control}
-            name="distributedAt"
+            name={DisAt}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
@@ -487,8 +701,8 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
                     className="input-field"
                     setTags={(newTags) => {
                       setKeyDistributedTags(newTags); //set tag and show tag on screen
-                      setValue(
-                        "distributedAt",
+                      form.setValue(
+                        "distributedAtCountry",
                         tagsToArrayOfString(newTags) as [string, ...string[]]
                       ); //add value to form with corresponding key
                     }}
@@ -503,17 +717,80 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
-            name="ingredients.cores"
+            name={Ingre}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel asChild>
-                  <legend className="pb-1">{cap(t.ingredient)}</legend>
+                  <legend className="pb-1">{cap(t.ingredients)}</legend>
                 </FormLabel>
                 <FormControl>
-                  <DoubleInput />
+                  <IngredientDrop
+                    {...field}
+                    setDataFromChild={(newValue) => {
+                      setIngredients(newValue as Ingredient[]);
+                      form.setValue("ingredients", newValue as Ingredient[]);
+                    }}
+                  />
                 </FormControl>
                 <FormDescription>
                   Những nguyên liệu chính làm ra sản phẩm
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name={Quarantine}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.quarantine)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-lg bg-grey-50 px-4 py-2">
+                    <Input
+                      type="number"
+                      placeholder={initialPlaceHolder}
+                      {...field}
+                      className="input-field"
+                    />
+                  </div>
+                </FormControl>
+                <FormDescription>
+                  Thời gian cách ly trước khi thu hoạch là bao lâu | Đơn vị:
+                  ngày
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name={uAmount}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.useAmount)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <CropPestDrop
+                    {...field}
+                    setDataFromChild={(newValue) => {
+                      form.setValue(
+                        "manual.useAmount",
+                        newValue as CropPestUploadData[]
+                      );
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Liều lượng sử dụng khuyến cáo trên cây trồng cụ thể với sâu
+                  bệnh cụ thể
                 </FormDescription>
                 <FormMessage />
               </FormItem>

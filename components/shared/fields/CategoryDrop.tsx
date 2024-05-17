@@ -7,6 +7,7 @@ import { ICategory } from "@/lib/database/models/category.model";
 import { DropdownProps, INewData } from "@/types";
 import { useEffect, useState } from "react";
 import BaseDrop from "./BaseDrop";
+import { FieldName } from "@/constants";
 
 const CategoryDrop = ({ value, onChangeHandler }: DropdownProps) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -37,7 +38,7 @@ const CategoryDrop = ({ value, onChangeHandler }: DropdownProps) => {
     <BaseDrop
       data={categories}
       value={value}
-      selectName="category"
+      selectName={FieldName.Cate}
       onChangeHandler={onChangeHandler}
       handleAddFunction={handleAddCategory}
       handleDeleteByIdFuntion={handleDeleteCategory}

@@ -6,6 +6,7 @@ import {
 import { DropdownProps, INewData, IOrganization } from "@/types";
 import { useEffect, useState } from "react";
 import BaseDrop from "./BaseDrop";
+import { FieldName } from "@/constants";
 
 const DistributerDrop = ({ value, onChangeHandler }: DropdownProps) => {
   const [distributers, setDistributers] = useState<IOrganization[]>([]);
@@ -38,7 +39,7 @@ const DistributerDrop = ({ value, onChangeHandler }: DropdownProps) => {
     <BaseDrop
       data={distributers}
       value={value}
-      selectName="distributer"
+      selectName={FieldName.Distributer}
       onChangeHandler={onChangeHandler}
       handleAddFunction={handleAddDistributer}
       handleDeleteByIdFuntion={handleDeleteDistributer}

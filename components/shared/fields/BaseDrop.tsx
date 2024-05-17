@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -5,13 +7,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { translator as t } from "@/constants";
+import { FieldName, translator as t } from "@/constants";
 import { DropdownProps, IDropdownShowData, INewData } from "@/types";
 import { cn } from "@/lib/utils";
 import DeleteAlert from "./alertdialog/DeleteAlert";
 import AddNewAlert from "./alertdialog/AddNewAlert";
 
-interface BaseProps extends DropdownProps {
+export interface BaseProps extends DropdownProps {
   data: IDropdownShowData[];
   selectName: string;
   handleAddFunction: () => void;
@@ -47,10 +49,10 @@ const BaseDrop = ({
                 value={e._id}
                 className={cn(
                   "select-item p-regular-14",
-                  selectName === "distributer" ||
-                    "packager" ||
-                    "manufacturer" ||
-                    "register"
+                  selectName === FieldName.Distributer ||
+                    FieldName.Packager ||
+                    FieldName.Manufacturer ||
+                    FieldName.Register
                     ? "uppercase"
                     : "capitalize"
                 )}

@@ -7,6 +7,7 @@ import {
   deleteFormulationById,
   getAllFormulations,
 } from "@/lib/actions/formulation.actions";
+import { FieldName } from "@/constants";
 
 const FormulationDrop = ({ value, onChangeHandler }: DropdownProps) => {
   const [formulations, setFormulations] = useState<IFormulation[]>([]);
@@ -38,7 +39,7 @@ const FormulationDrop = ({ value, onChangeHandler }: DropdownProps) => {
     <BaseDrop
       data={formulations}
       value={value}
-      selectName="formulation"
+      selectName={FieldName.Formu}
       onChangeHandler={onChangeHandler}
       handleAddFunction={handleAddFormulation}
       handleDeleteByIdFuntion={handleDeleteFormulation}

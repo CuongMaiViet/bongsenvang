@@ -6,6 +6,7 @@ import {
 import { DropdownProps, INewData, IOrganization } from "@/types";
 import { useEffect, useState } from "react";
 import BaseDrop from "./BaseDrop";
+import { FieldName } from "@/constants";
 
 const RegisterDrop = ({ value, onChangeHandler }: DropdownProps) => {
   const [registers, setRegisters] = useState<IOrganization[]>([]);
@@ -38,7 +39,7 @@ const RegisterDrop = ({ value, onChangeHandler }: DropdownProps) => {
     <BaseDrop
       data={registers}
       value={value}
-      selectName="register"
+      selectName={FieldName.Register}
       onChangeHandler={onChangeHandler}
       handleAddFunction={handleAddRegister}
       handleDeleteByIdFuntion={handleDeleteRegister}

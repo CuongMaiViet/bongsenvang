@@ -6,6 +6,7 @@ import {
 import { DropdownProps, INewData, IOrganization } from "@/types";
 import { useEffect, useState } from "react";
 import BaseDrop from "./BaseDrop";
+import { FieldName } from "@/constants";
 
 const ManufacturerDrop = ({ value, onChangeHandler }: DropdownProps) => {
   const [manufacturers, setManufacturers] = useState<IOrganization[]>([]);
@@ -38,7 +39,7 @@ const ManufacturerDrop = ({ value, onChangeHandler }: DropdownProps) => {
     <BaseDrop
       data={manufacturers}
       value={value}
-      selectName="manufacturer"
+      selectName={FieldName.Manufacturer}
       onChangeHandler={onChangeHandler}
       handleAddFunction={handleAddManufacturer}
       handleDeleteByIdFuntion={handleDeleteManufacturer}
