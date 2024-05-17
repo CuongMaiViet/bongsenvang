@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const fontFamily = Noto_Serif({
@@ -26,7 +26,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={fontFamily.variable}>{children}</body>
+        <body className={fontFamily.variable}>
+          {children}
+          <SpeedInsights />
+        </body>
       </html>
     </ClerkProvider>
   );
