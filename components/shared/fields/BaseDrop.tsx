@@ -35,7 +35,7 @@ const BaseDrop = ({
   return (
     <Select
       onValueChange={onChangeHandler}
-      defaultValue={value}
+      value={value}
       name={selectName}
     >
       <SelectTrigger className="select-field capitalize">
