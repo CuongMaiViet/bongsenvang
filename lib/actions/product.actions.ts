@@ -2,7 +2,7 @@
 
 import { connectToDataBase } from "../database";
 import { handleError } from "../utils";
-import { CreateProductParams } from "@/types";
+import { CreateProductParams, DeleteProductParams, GetAllProductsParams, UpdateProductParams } from "@/types";
 import Manufacturer from "../database/models/manufacturer.model";
 import Product from "../database/models/product.model";
 import Category from "../database/models/category.model";
@@ -14,6 +14,7 @@ import Ingredient from "../database/models/ingredient.model";
 import User from "../database/models/user.model";
 import Crop from "../database/models/crop.model";
 import Pest from "../database/models/pest.model";
+import { revalidatePath } from "next/cache";
 
 const populateProduct = async (query: any) => {
   return query
@@ -111,3 +112,61 @@ export const getProductById = async (productId: string) => {
     handleError(error);
   }
 };
+
+export const getAllProducts = async ({ query, limit = 6, page, category }: GetAllProductsParams) => {
+  try {
+    await connectToDataBase();
+
+    const conditions = {}
+
+    const productsQuery = Product.find(conditions).sort({ createdAt: 'desc' }).skip(0).limit(limit)
+
+    const products = await populateProduct(productsQuery)
+    const productsCount = await Product.countDocuments(conditions)
+
+    return {
+      data: JSON.parse(JSON.stringify(products)),
+      totalPages: Math.ceil(productsCount / limit)
+    }
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const deleteProduct = async ({ productId, path }: DeleteProductParams) => {
+  try {
+    await connectToDataBase();
+    const deletedProduct = await Product.findByIdAndDelete(productId)
+
+    if (deletedProduct) revalidatePath(path)
+
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export const updateProduct = async ({
+  product,
+  userId,
+  path,
+}: UpdateProductParams) => {
+  try {
+    await connectToDataBase();
+
+    const productToUpdate = await Product.findById(product._id)
+    if (!productToUpdate || productToUpdate.createdBy.toHexString() !== userId) {
+      throw new Error('Unauthorized or product not found')
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      product._id,
+      { ...product, category: product.category },
+      { new: true }
+    )
+    revalidatePath(path)
+
+    return JSON.parse(JSON.stringify(updatedProduct))
+  } catch (error) {
+    handleError(error)
+  }
+}

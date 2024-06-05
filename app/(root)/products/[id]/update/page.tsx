@@ -1,8 +1,16 @@
 import ProductForm from "@/components/shared/ProductForm";
+import { getProductById } from "@/lib/actions/product.actions";
 import { auth } from "@clerk/nextjs";
 
-const UpdateProduct = () => {
+type UpdateProductProps = {
+  params: {
+    id: string;
+  };
+};
+
+const UpdateProduct = async ({ params: { id } }: UpdateProductProps) => {
   const { sessionClaims } = auth();
+  const product = await getProductById(id);
   const userId = sessionClaims?.userId as string;
 
   return (
@@ -14,7 +22,12 @@ const UpdateProduct = () => {
       </section>
 
       <div className="wrapper my-8">
-        <ProductForm userId={userId} type="Update" />
+        <ProductForm
+          userId={userId}
+          product={product}
+          productId={product._id}
+          type="Update"
+        />
       </div>
     </>
   );

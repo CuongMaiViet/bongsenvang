@@ -3,6 +3,7 @@ import { Document, Schema, model, models } from "mongoose";
 export interface IProduct extends Document {
   _id: string;
   title: string;
+  slogan: string;
   registrationNumber: string;
   imageUrl: string;
   price?: string;
@@ -33,8 +34,9 @@ export interface IProduct extends Document {
   manufacturer: { _id: string; title: string; contacts: { address: string } };
   register: { _id: string; title: string; contacts: { address: string } };
   packager: { _id: string; title: string; contacts: { address: string } };
-  distributer: { _id: string; title: string; contacts: { address: string } };
+  distributer: { _id: string; title: string; shortTitle: string; contacts: { address: string } };
   distributedAtCountry: [string];
+  createdBy: { _id: string }
 }
 
 const ProductSchema = new Schema({

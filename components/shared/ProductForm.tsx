@@ -34,15 +34,23 @@ import {
   RegisterDrop,
 } from "./fields";
 import { useRouter } from "next/navigation";
-import { createProduct } from "@/lib/actions/product.actions";
+import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import CropPestDrop, { CropPestUploadData } from "./fields/useAmount";
+import { IProduct } from "@/lib/database/models/product.model";
 
 type ProductFormProps = {
   userId: string;
   type: "Create" | "Update";
+  product?: IProduct;
+  productId?: string;
 };
 
-const ProductForm = ({ userId, type }: ProductFormProps) => {
+const ProductForm = ({
+  userId,
+  type,
+  product,
+  productId,
+}: ProductFormProps) => {
   const initialValues = productDefaultValues;
   const initialPlaceHolder = "Điền vào đây...";
 
@@ -124,6 +132,38 @@ const ProductForm = ({ userId, type }: ProductFormProps) => {
         if (newProduct) {
           form.reset();
           router.push(`/products/${newProduct._id}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (type === "Update") {
+      if (!productId) {
+        router.back();
+        return;
+      }
+
+      try {
+        const updatedProduct = await updateProduct({
+          product: {
+            ...values,
+            _id: productId,
+            imageUrl: uploadedImageUrl,
+            exp: `${values.exp} năm`,
+            price: `${values.price || 0} VNĐ`,
+            manual: {
+              ...values.manual,
+              quarantine: `${values.manual.quarantine} ngày`,
+            },
+          },
+          userId,
+          path: `/products/${productId}`,
+        });
+
+        if (updatedProduct) {
+          form.reset();
+          router.push(`/products/${updatedProduct._id}`);
         }
       } catch (error) {
         console.log(error);

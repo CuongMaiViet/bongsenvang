@@ -1,8 +1,18 @@
+import Collection from "@/components/shared/Collection";
 import { Button } from "@/components/ui/button";
+import { getAllProducts } from "@/lib/actions/product.actions";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts({
+    query: "",
+    category: "",
+    page: 1,
+    limit: 6,
+  });
+  // console.log(products);
+
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
@@ -38,11 +48,21 @@ export default function Home() {
         className="wrapper my-8 flex flex-col gap-8 md:gap-12"
       >
         <h2 className="h2-bold">
-          Trusted by <br /> Thousands of Retailers
+          Được tin dùng bởi <br /> Hàng trăm đại lý khắp Việt Nam
         </h2>
         <div className="flex w-full flex-col gap-5 md:flex-row">
           search categoryfilter
         </div>
+
+        <Collection
+          data={products?.data}
+          emptyTitle="Không tìm thấy sản phẩm"
+          emptyStateSubtext="Vui lòng quay lại sau"
+          collectionType="All_Products"
+          limit={6}
+          page={1}
+          totalPages={2}
+        />
       </section>
     </>
   );

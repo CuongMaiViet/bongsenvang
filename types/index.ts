@@ -50,45 +50,62 @@ export type CreateProductParams = {
   path: string;
 };
 
-export type UpdateEventParams = {
+export type UpdateProductParams = {
   userId: string;
-  event: {
+  product: {
     _id: string;
     title: string;
+    registrationNumber: string;
     imageUrl: string;
-    description: string;
-    location: string;
-    startDateTime: Date;
-    endDateTime: Date;
-    categoryId: string;
     price: string;
-    isFree: boolean;
-    url: string;
+    ingredients: { ingredient: string; amount: string }[];
+    category: string;
+    formulation: string;
+    characteristic: string[];
+    benefit: string[];
+    manual: {
+      intro: string;
+      useHow: string;
+      useWhen: string;
+      useAmount: { crop: string; pest: string; amount: string }[];
+      note: string;
+      quarantine: string;
+      safetyInstruction: string;
+      afterUse: string;
+      firstAid: string;
+    };
+    mfg: string;
+    exp: string;
+    manufacturer: string;
+    register: string;
+    packager: string;
+    distributer: string;
+    distributedAtCountry: string[];
   };
   path: string;
 };
 
-export type DeleteEventParams = {
-  eventId: string;
+export type DeleteProductParams = {
+  productId: string;
   path: string;
 };
 
-export type GetAllEventsParams = {
+export type GetAllProductsParams = {
   query: string;
   category: string;
   limit: number;
   page: number;
 };
 
-export type GetEventsByUserParams = {
+export type GetProductsByUserParams = {
   userId: string;
   limit?: number;
   page: number;
 };
 
-export type GetRelatedEventsByCategoryParams = {
+export type GetRelatedProductsByCategoryParams = {
   categoryId: string;
-  eventId: string;
+  productId: string;
   limit?: number;
   page: number | string;
 };
@@ -192,7 +209,7 @@ export interface IOrganization extends Document {
 // ====== ORDER PARAMS
 export type CheckoutOrderParams = {
   eventTitle: string;
-  eventId: string;
+  productId: string;
   price: string;
   isFree: boolean;
   buyerId: string;
@@ -200,14 +217,14 @@ export type CheckoutOrderParams = {
 
 export type CreateOrderParams = {
   stripeId: string;
-  eventId: string;
+  productId: string;
   buyerId: string;
   totalAmount: string;
   createdAt: Date;
 };
 
 export type GetOrdersByEventParams = {
-  eventId: string;
+  productId: string;
   searchString: string;
 };
 
