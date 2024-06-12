@@ -2,7 +2,7 @@
 
 import { connectToDataBase } from "../database";
 import { handleError } from "../utils";
-import { CreateProductParams, DeleteProductParams, GetAllProductsParams, UpdateProductParams } from "@/types";
+import { CreateProductParams, DeleteProductParams, GetAllProductsParams, GetRelatedProductsByCategoryParams, UpdateProductParams } from "@/types";
 import Manufacturer from "../database/models/manufacturer.model";
 import Product from "../database/models/product.model";
 import Category from "../database/models/category.model";
@@ -15,6 +15,10 @@ import User from "../database/models/user.model";
 import Crop from "../database/models/crop.model";
 import Pest from "../database/models/pest.model";
 import { revalidatePath } from "next/cache";
+
+const getCategoryByTitle = async (title: string) => {
+  return Category.findOne({ title: new RegExp(title, 'i') })
+}
 
 const populateProduct = async (query: any) => {
   return query
@@ -117,9 +121,17 @@ export const getAllProducts = async ({ query, limit = 6, page, category }: GetAl
   try {
     await connectToDataBase();
 
-    const conditions = {}
+    const titleCondition = query ? { title: new RegExp(query, 'i') } : {}
+    const categoryCondition = category ? await getCategoryByTitle(category) : null
+    const conditions = {
+      $and: [titleCondition, categoryCondition ? { category: categoryCondition._id } : {}]
+    }
 
-    const productsQuery = Product.find(conditions).sort({ createdAt: 'desc' }).skip(0).limit(limit)
+    const skipAmount = (Number(page) - 1) * limit
+    const productsQuery = Product.find(conditions)
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(limit)
 
     const products = await populateProduct(productsQuery)
     const productsCount = await Product.countDocuments(conditions)
@@ -166,6 +178,32 @@ export const updateProduct = async ({
     revalidatePath(path)
 
     return JSON.parse(JSON.stringify(updatedProduct))
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export async function getRelatedProductsByCategory({
+  categoryId,
+  productId,
+  limit = 3,
+  page = 1,
+}: GetRelatedProductsByCategoryParams) {
+  try {
+    await connectToDataBase()
+
+    const skipAmount = (Number(page) - 1) * limit
+    const conditions = { $and: [{ category: categoryId }, { _id: { $ne: productId } }] }
+
+    const productsQuery = Product.find(conditions)
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(limit)
+
+    const events = await populateProduct(productsQuery)
+    const productsCount = await Product.countDocuments(conditions)
+
+    return { data: JSON.parse(JSON.stringify(events)), totalPages: Math.ceil(productsCount / limit) }
   } catch (error) {
     handleError(error)
   }

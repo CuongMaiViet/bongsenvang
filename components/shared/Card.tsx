@@ -19,12 +19,12 @@ const Card = ({ product, hasOrderLink, hidePrice }: CardProps) => {
   const isProductCreator = userId === product.createdBy._id.toString();
 
   return (
-    <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
+    <div className="group relative flex min-h-[500px] w-full max-w-[400px] flex-col overflow-hidden rounded-lg shadow-md transition-all hover:shadow-lg sm:min-h-[430px] md:min-h-[500px]">
       <Link
         href={`/products/${product._id}`}
         target="_blank"
         style={{ backgroundImage: `url(${product.imageUrl})` }}
-        className="flex-center flex-grow bg-gray-50 bg-contain bg-center text-grey-500"
+        className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
       />
 
       {isProductCreator && (
@@ -44,7 +44,7 @@ const Card = ({ product, hasOrderLink, hidePrice }: CardProps) => {
       <Link
         href={`/products/${product._id}`}
         target="_blank"
-        className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4"
+        className="flex px-5 py-0 h-0 flex-col gap-3 md:gap-4 group-hover:h-[230px] group-hover:py-5 transition-all duration-700 ease-in-out "
       >
         <div className="flex gap-2">
           <span className="p-semibold-14 w-fit px-4 py-1 rounded-full bg-green-100 text-green-60 uppercase">
