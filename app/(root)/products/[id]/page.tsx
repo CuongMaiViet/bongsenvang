@@ -24,7 +24,7 @@ const ProductDetails = async ({
   return (
     <>
       <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain md:max-h-[630px]">
-        <div className="inline-grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
           <Image
             src={product.imageUrl}
             alt="hero image"
