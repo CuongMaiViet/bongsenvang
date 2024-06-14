@@ -30,7 +30,7 @@ const ProductDetails = async ({
             alt="hero image"
             width={500}
             height={500}
-            className="h-full min-h-[300px] object-contain object-center"
+            className="h-full min-h-[300px] object-contain object-top md:object-center"
           />
           <div className="flex w-full flex-col gap-0 p-5 md:py-10 md:max-h-full md:overflow-y-auto">
             <div className="flex flex-col gap-6">
