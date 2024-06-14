@@ -7,8 +7,7 @@ export default function Logo() {
       src={"/assets/images/logo.svg"}
       alt="logo"
       tabIndex={-1}
-      className="w-[138px] h-auto"
-      priority
+      className="w-[90px] h-auto"
     />
   );
 }

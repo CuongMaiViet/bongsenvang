@@ -5,7 +5,7 @@ export const headerLinks = [
   },
   {
     label: "Giới thiệu",
-    route: "/about",
+    route: "/aboutus",
   },
   {
     label: "Sản phẩm",

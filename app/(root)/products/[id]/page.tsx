@@ -23,16 +23,16 @@ const ProductDetails = async ({
 
   return (
     <>
-      <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain md:max-h-[795px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
+      <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain md:max-h-[630px]">
+        <div className="inline-grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
           <Image
             src={product.imageUrl}
             alt="hero image"
-            width={1000}
-            height={1000}
-            className="h-full min-h-[300px] object-contain object-top"
+            width={500}
+            height={500}
+            className="h-full min-h-[300px] object-contain object-center"
           />
-          <div className="flex w-full flex-col gap-8 p-5 md:p-10 md:max-h-full md:overflow-y-auto">
+          <div className="flex w-full flex-col gap-0 p-5 md:py-10 md:max-h-full md:overflow-y-auto">
             <div className="flex flex-col gap-6">
               <h2 className="h2-bold">{product.title}</h2>
 

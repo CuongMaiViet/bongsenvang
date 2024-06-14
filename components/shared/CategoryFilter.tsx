@@ -48,7 +48,7 @@ const CategoryFilter = () => {
   return (
     <Select onValueChange={(value: string) => onSelectCategory(value)}>
       <SelectTrigger className="select-field">
-        <SelectValue placeholder="Lọc theo chủng loại thuốc" />
+        <SelectValue placeholder="Chủng loại thuốc" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="All" className="select-item p-regular-14">
