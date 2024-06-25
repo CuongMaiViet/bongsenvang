@@ -8,8 +8,8 @@ export const headerLinks = [
     route: "/aboutus",
   },
   {
-    label: "Sản phẩm",
-    route: "/products/create",
+    label: "Tin Tức",
+    route: "/news",
   },
 ];
 
@@ -21,6 +21,8 @@ export enum Delimiter {
 
 export enum FieldName {
   Title = "title",
+  Slogan = "slogan",
+  DisplayType = "displayType",
   RegisNum = "registrationNumber",
   Cate = "category",
   Formu = "formulation",
@@ -49,6 +51,8 @@ export enum FieldName {
 
 export const translator = {
   title: "tên sản phẩm",
+  slogan: "câu quảng bá",
+  displayType: "cách trình bày sản phẩm",
   registrationNumber: "mã số đăng ký",
   image: "hình ảnh sản phẩm",
   imageUrl: "đường link hình ảnh",
@@ -84,6 +88,8 @@ export const translator = {
 
 export const productDefaultValues = {
   title: "",
+  slogan: "",
+  displayType: "1",
   registrationNumber: "",
   imageUrl: "",
   price: "",

@@ -32,7 +32,7 @@ const ProductDetails = async ({
             height={500}
             className="h-full min-h-[300px] object-contain object-top md:object-center"
           />
-          <div className="flex w-full flex-col gap-0 p-5 md:py-10 md:max-h-full md:overflow-y-auto">
+          <div className="flex w-full flex-col gap-8 p-5 md:py-10 md:max-h-full md:overflow-y-auto">
             <div className="flex flex-col gap-6">
               <h2 className="h2-bold">{product.title}</h2>
 
@@ -59,12 +59,15 @@ const ProductDetails = async ({
             {/* BUTTON */}
 
             <div className="flex flex-col gap-5">
-              <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
-                SĐK:{" "}
-                <span className="text-primary-500 uppercase">
-                  {product.registrationNumber}
-                </span>
-              </p>
+              {product.registrationNumber && (
+                <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
+                  SĐK:{" "}
+                  <span className="text-primary-500 uppercase">
+                    {product.registrationNumber}
+                  </span>
+                </p>
+              )}
+
               <div className="flex items-center gap-2 md:gap-3">
                 <Image
                   src="/assets/icons/calendar.svg"
@@ -73,9 +76,11 @@ const ProductDetails = async ({
                   height={0}
                   className="w-[32px] h-auto"
                 />
-                <div className="p-medium-16 lg:p-regular-20">
-                  <p>{`Hạn sử dụng: ${product.exp}`}</p>
-                </div>
+                {product.exp && (
+                  <div className="p-medium-16 lg:p-regular-20">
+                    <p>{`Hạn sử dụng: ${product.exp}`}</p>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center gap-2 md:gap-3">
@@ -93,30 +98,52 @@ const ProductDetails = async ({
               </div>
             </div>
 
-            <InfoDisplay title="Tổng quan">{product.manual.intro}</InfoDisplay>
-            <InfoDisplay title="Lợi ích">
-              {product.benefit.map((p: string, i: number) => (
-                <div className="flex gap-2 items-center" key={i}>
-                  <Image
-                    src={"/assets/icons/handright.png"}
-                    alt="handright"
-                    width={32}
-                    height={32}
-                  />
-                  <span className="">{p}</span>
-                </div>
-              ))}
-            </InfoDisplay>
-            <InfoDisplay title="Cách dùng">{product.manual.useHow}</InfoDisplay>
-            <InfoDisplay title="Chú ý" titleSize={16}>
-              {product.manual.note}
-            </InfoDisplay>
-            <InfoDisplay title="Thời điểm sử dụng">
-              {product.manual.useWhen}
-            </InfoDisplay>
-            <InfoDisplay title="Thời gian cách ly">
-              {product.manual.quarantine}
-            </InfoDisplay>
+            {product.manual.intro && (
+              <InfoDisplay title="Tổng quan">
+                {product.manual.intro}
+              </InfoDisplay>
+            )}
+
+            {product.benefit.length > 0 && (
+              <InfoDisplay title="Lợi ích">
+                {product.benefit.map((p: string, i: number) => (
+                  <div className="flex gap-2 items-center" key={i}>
+                    <Image
+                      src={"/assets/icons/handright.png"}
+                      alt="handright"
+                      width={32}
+                      height={32}
+                    />
+                    <span className="">{p}</span>
+                  </div>
+                ))}
+              </InfoDisplay>
+            )}
+
+            {product.manual.useHow && (
+              <InfoDisplay title="Cách dùng">
+                {product.manual.useHow}
+              </InfoDisplay>
+            )}
+
+            {product.manual.note && (
+              <InfoDisplay title="Chú ý" titleSize="p-bold-16">
+                {product.manual.note}
+              </InfoDisplay>
+            )}
+
+            {product.manual.useWhen && (
+              <InfoDisplay title="Thời điểm sử dụng">
+                {product.manual.useWhen}
+              </InfoDisplay>
+            )}
+
+            {product.manual.quarantine !== " ngày" && (
+              <InfoDisplay title="Thời gian cách ly">
+                {product.manual.quarantine}
+              </InfoDisplay>
+            )}
+
             <InfoDisplay title="Hướng dẫn an toàn chung">
               {product.manual.safetyInstruction}
             </InfoDisplay>

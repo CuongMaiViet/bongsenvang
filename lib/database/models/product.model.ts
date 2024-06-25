@@ -4,6 +4,7 @@ export interface IProduct extends Document {
   _id: string;
   title: string;
   slogan: string;
+  displayType: string;
   registrationNumber: string;
   imageUrl: string;
   price?: string;
@@ -41,6 +42,8 @@ export interface IProduct extends Document {
 
 const ProductSchema = new Schema({
   title: { type: String, required: true },
+  slogan: { type: String },
+  displayType: { type: String, required: true },
   registrationNumber: { type: String },
   imageUrl: { type: String, required: true },
   price: { type: String },

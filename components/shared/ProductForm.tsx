@@ -56,6 +56,8 @@ const ProductForm = ({
 
   const {
     Title,
+    Slogan,
+    DisplayType,
     RegisNum,
     Cate,
     Formu,
@@ -205,6 +207,52 @@ const ProductForm = ({
               <FormItem className="w-full">
                 <FormLabel asChild>
                   <legend className="pb-1">{cap(t.registrationNumber)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="input-field"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name={DisplayType}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.displayType)}</legend>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={initialPlaceHolder}
+                    {...field}
+                    className="input-field"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Sản phẩm sẽ được trình bày lên trang web theo cách thức nào.
+                  Liên hệ coder để biết thêm chi tiết.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name={Slogan}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel asChild>
+                  <legend className="pb-1">{cap(t.slogan)}</legend>
                 </FormLabel>
                 <FormControl>
                   <Input

@@ -3,6 +3,8 @@ import { translator as t } from "@/constants";
 
 export const productFormSchema = z.object({
   title: z.string().min(1, `Vui lòng điền ${t.title}`).trim(),
+  slogan: z.string().trim(),
+  displayType: z.string().trim(),
   registrationNumber: z
     .string()
     // .min(1, `Vui lòng điền ${t.registrationNumber} của sản phẩm`)
