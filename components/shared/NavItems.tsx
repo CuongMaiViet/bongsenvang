@@ -18,8 +18,8 @@ const NavItems = ({ isScroll }: { isScroll: number }) => {
           <li
             key={link.route}
             className={cn(
-              "relative border-b-after flex-center text-white p-medium-18 whitespace-nowrap",
-              isScroll !== 0 && "text-black",
+              "relative border-b-after flex-center text-black md:text-white p-medium-18 whitespace-nowrap",
+              isScroll !== 0 && "md:text-black",
               isActive && "p-semibold-18"
             )}
           >

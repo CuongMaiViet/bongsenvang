@@ -30,6 +30,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
             autoPlay
             loop
             muted
+            playsInline
           >
             <source src="/assets/images/hero.mp4" type="video/mp4" />
           </video>
