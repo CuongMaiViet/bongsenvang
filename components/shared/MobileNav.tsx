@@ -11,7 +11,7 @@ import { Separator } from "../ui/separator";
 import NavItems from "./NavItems";
 import Logo from "../custom/Logo";
 
-const MobileNav = () => {
+const MobileNav = ({ isScroll }: { isScroll: number }) => {
   return (
     <nav className="md:hidden">
       <Sheet>
@@ -27,7 +27,7 @@ const MobileNav = () => {
         <SheetContent className="flex flex-col gap-6 bg-white md:hidden">
           <Logo />
           <Separator className="border border-gray-100" />
-          <NavItems />
+          <NavItems isScroll={isScroll} />
         </SheetContent>
       </Sheet>
     </nav>

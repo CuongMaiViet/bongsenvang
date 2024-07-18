@@ -45,7 +45,7 @@ const Header = () => {
         </nav>
 
         <div className="flex w-32 justify-end gap-3">
-          <MobileNav />
+          <MobileNav isScroll={isScroll} />
         </div>
 
         {/* <SignedIn>
