@@ -4,11 +4,11 @@ export const headerLinks = [
     route: "/",
   },
   {
-    label: "Giới thiệu",
-    route: "/aboutus",
+    label: "Sản phẩm",
+    route: "/products",
   },
   {
-    label: "Tin Tức",
+    label: "Tin tức",
     route: "/news",
   },
 ];

@@ -25,6 +25,8 @@ module.exports = withUt({
           DEFAULT: "#624CF5",
           foreground: "hsl(var(--primary-foreground))",
         },
+        logoYellow: "#fcb900",
+        logoGreen: "#007841",
         coral: {
           500: "#15BF59",
         },
@@ -86,6 +88,10 @@ module.exports = withUt({
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        appear: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

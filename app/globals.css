@@ -100,7 +100,29 @@ body {
     @apply flex justify-between items-center;
   }
 
+  .border-b-after{
+    @apply after:content-[""] after:h-[3px] after:w-[0px] after:right-[0%] hover:after:w-[100%] hover:after:left-[0%] after:duration-300 after:transition-all after:bg-logoYellow after:rounded-xl after:absolute after:bottom-[-5px]
+  }
+
+  .hero-bg{
+    @apply bg-fixed bg-[url('/assets/images/hero2.png')] bg-cover bg-center bg-no-repeat 
+    before:content-[""] before:absolute before:top-0 before:bottom-0 before:left-0 before:right-0 before:opacity-40 before:bg-gradient-to-r before:from-[#000000] before:to-[#7bbdffbe] before:pointer-events-none
+  }
+
+  .overlay{
+    @apply bg-gradient-to-l from-[rgba(255,0,0,0)] to-[rgba(0,0,0,1)]
+  }
+
+  .basic-info-card{
+    @apply bg-white text-logoGreen py-3 rounded-xl shadow-lg border-t-[8px] border-logoGreen cursor-pointer pointer-events-none
+  }
+
   /* TYPOGRAPHY */
+  /* Highlighter */
+  .highlighter{
+    @apply font-bold drop-shadow-lg
+  }
+
   /* 64 */
   .h1-bold {
     @apply font-bold text-[40px] leading-[48px] lg:text-[48px] lg:leading-[60px]  xl:text-[58px] xl:leading-[74px];
@@ -222,7 +244,7 @@ body {
   }
 
   .button {
-    @apply rounded-lg h-[54px] p-regular-16;
+    @apply rounded-lg h-[54px] p-medium-16;
   }
 
   .select-item {

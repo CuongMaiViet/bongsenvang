@@ -3,7 +3,8 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/aboutus",
+    "/news",
+    "/products",
     "/products/:id",
     "/api/webhook/clerk",
     "/api/webhook/stripe",

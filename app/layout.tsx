@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Noto_Serif } from "next/font/google";
+import { Noto_Serif, Roboto_Serif } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-const fontFamily = Noto_Serif({
+const fontFamily = Roboto_Serif({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["100", "300", "400", "500", "700", "900"],
   variable: "--font-noto-serif",
 });
 
