@@ -18,7 +18,8 @@ const NavItems = ({ isScroll }: { isScroll: number }) => {
           <li
             key={link.route}
             className={cn(
-              "relative border-b-after flex-center text-black md:text-white p-medium-18 whitespace-nowrap",
+              "relative border-b-after flex-center text-black md:text-black p-medium-18 whitespace-nowrap",
+              pathname === "/" && "md:text-white",
               isScroll !== 0 && "md:text-black",
               isActive && "p-semibold-18"
             )}

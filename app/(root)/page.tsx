@@ -26,7 +26,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
       <section className="relative overflow-hidden w-full h-[100vh]">
         <div className="overlay flex items-center justify-start w-full h-full object-cover -z-10 overflow-hidden">
           <video
-            className="w-full h-full fixed top-0 left-0 -z-50 opacity-[0.8]"
+            className="w-full h-full object-cover fixed top-0 left-0 -z-50 opacity-[0.8]"
             autoPlay
             loop
             muted

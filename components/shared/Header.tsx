@@ -17,9 +17,9 @@ const Header = () => {
     const handleScroll = () => {
       let direction = lastScrollY < scrollY ? "down" : "up";
       lastScrollY = scrollY;
-      direction === "down" && scrollY > 1 && setIsScroll(1);
+      direction === "down" && scrollY > 10 && setIsScroll(1);
       direction === "up" && scrollY > 1 && setIsScroll(2);
-      direction === "up" && scrollY === 0 && setIsScroll(0);
+      direction === "up" && scrollY <= 10 && setIsScroll(0);
     };
     window.addEventListener("scroll", handleScroll);
 
